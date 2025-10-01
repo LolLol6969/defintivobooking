@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <p className="text-center md:text-left mb-4 md:mb-0">
-            © 2025 Elysian Sands Resort | Creato da Orlando.
+            © 2025 Orla Resort | Creato da Orlando.
           </p>
 
           {/* Social media links removed as requested */}
