@@ -40,7 +40,7 @@ export default function HomePage() {
             Orla Resort
           </h1>
           <p className="text-xl md:text-2xl text-high-contrast mb-8 font-light text-pretty glass-text-bg">
-            Scopri un'oasi di lusso e serenità a Lido degli Estensi, dove ogni dettaglio è pensato per un'esperienza indimenticabile.
+            Scopri un'oasi di lusso e serenità a edorado gay, dove ogni dettaglio è pensato per un'esperienza indimenticabile.
           </p>
           <Link
             href="/suite"
