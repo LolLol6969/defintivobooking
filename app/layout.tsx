@@ -12,7 +12,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Elysian Sands Resort - Dove il Lusso Incontra l'Orizzonte",
+  title: "Orla Resort - Dove il Lusso Incontra l'Orizzonte",
   description: "Vivi un'esperienza senza tempo nel cuore di Lido degli Estensi",
   generator: "v0.app",
 }
