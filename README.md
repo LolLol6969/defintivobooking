@@ -1,4 +1,5 @@
-Progetto deployato su https://resortorla.it/ 
+
+Project deployed on https://resortorla.it/ 
 
 Open Source Website Template for Hospitality
 This project is a cutting-edge website template specifically designed for hotels, B&Bs, and other hospitality structures. Created by Orlando K., it stands out by adopting a striking "Liquid Glass" aesthetic, inspired by the futuristic interfaces of the latest iOS (e.g., iOS 26). This style gives the site a luxurious, modern, and engaging visual presence.
@@ -33,7 +34,7 @@ orlandobusiness25@gmail.com
 
 
 
-Project deployed on https://resortorla.it/ 
+Progetto deployato su https://resortorla.it/ 
 
 Template per Sito Web Open Source per il Settore Ospitalità
 Questo progetto è un template per sito web all'avanguardia specificamente progettato per hotel, B&B e altre strutture ricettive. Creato da Orlando K., si distingue per l'adozione di una sorprendente estetica "Liquid Glass", ispirata alle interfacce futuristiche dell'ultimo iOS (ad esempio, iOS 26). Questo stile conferisce al sito una presenza visiva lussuosa, moderna e coinvolgente.
