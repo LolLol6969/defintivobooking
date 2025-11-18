@@ -91,9 +91,6 @@ export default function EsperienzePage() {
                       <p className="font-semibold text-elysian-primary mb-2">{experience.pricing}</p>
                       <p className="text-sm text-gray-600">{experience.details}</p>
                     </div>
-                    <button className="bg-elysian-primary text-elysian-secondary px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-300">
-                      Prenota Ora
-                    </button>
                   </div>
                   <div className={experience.reverse ? "md:col-start-1" : ""}>
                     <img
