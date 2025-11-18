@@ -29,7 +29,7 @@ const experiences = [
       "Godetevi il sole e il mare nella nostra spettacolare Infinity Pool, che si fonde con l'orizzonte dell'Adriatico. La nostra spiaggia privata, con sabbia dorata e servizio impeccabile, offre lettini confortevoli e cabanas esclusive per la massima privacy. Perfetto per rilassarsi, nuotare o sorseggiare un cocktail al tramonto.",
     image: "/infinity-pool-overlooking-ocean-with-luxury-beach-.png",
     reverse: false,
-    pricing: "Accesso gratuito per gli ospiti del resort | Noleggio cabana privata: €60/giorno",
+    pricing: "Accesso gratuito per gli ospiti del resort | Noleggio cabina privata: €60/giorno",
     details: "Piscina aperta dalle 08:00 alle 22:00 | Servizio spiaggia dalle 09:00 alle 19:00.",
   },
 ]
