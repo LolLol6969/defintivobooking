@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
@@ -37,33 +37,46 @@ const experiences = [
 export default function EsperienzePage() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const sectionsRef = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("fade-in-up")
-        }
-      })
-    }, observerOptions)
-
-    if (titleRef.current) observer.observe(titleRef.current)
-    if (sectionsRef.current) {
-      const sections = sectionsRef.current.querySelectorAll(".experience-section")
-      sections.forEach((section, index) => {
-        setTimeout(() => {
-          observer.observe(section)
-        }, index * 200)
-      })
-    }
-
-    return () => observer.disconnect()
+    setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!mounted || typeof window === "undefined") return
+
+    try {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("fade-in-up")
+          }
+        })
+      }, observerOptions)
+
+      if (titleRef.current) observer.observe(titleRef.current)
+      if (sectionsRef.current) {
+        const sections = sectionsRef.current.querySelectorAll(".experience-section")
+        sections.forEach((section, index) => {
+          setTimeout(() => {
+            observer.observe(section)
+          }, index * 200)
+        })
+      }
+
+      return () => observer.disconnect()
+    } catch (error) {
+      console.error("[v0] IntersectionObserver error:", error)
+    }
+  }, [mounted])
+
+  if (!mounted) return null
 
   return (
     <div className="min-h-screen beach-background">

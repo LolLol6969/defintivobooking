@@ -4,7 +4,6 @@ import type React from "react"
 
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { fetchBookings } from "@/lib/supabase/actions"
 import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from "date-fns"
 import { it } from "date-fns/locale"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +18,7 @@ interface Booking {
   check_in_date: string
   check_out_date: string
   num_guests: number
+  arrangement: string
   message?: string
   created_at: string
 }
@@ -28,7 +28,6 @@ const CALENDAR_PASSWORD = "orla2025"
 export default function CalendarPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [passwordInput, setPasswordInput] = useState("")
@@ -40,34 +39,22 @@ export default function CalendarPage() {
     if (auth === "true") {
       setIsAuthenticated(true)
     }
+    setLoading(false)
   }, [])
 
   useEffect(() => {
     if (!isAuthenticated) return
-    fetchBookingsData()
-  }, [isAuthenticated])
-
-  async function fetchBookingsData() {
     try {
-      setLoading(true)
-      setError(null)
-
-      const result = await fetchBookings()
-
-      if (!result.success) {
-        setError(result.error || "Errore durante il caricamento delle prenotazioni")
-        return
+      const bookingsData = localStorage.getItem("bookings")
+      if (bookingsData) {
+        const parsed = JSON.parse(bookingsData)
+        setBookings(Array.isArray(parsed) ? parsed : [])
       }
-
-      setBookings(result.data || [])
-      setError(null)
-    } catch (err: any) {
-      const errorMessage = err?.message || "Errore sconosciuto"
-      setError(errorMessage)
-    } finally {
-      setLoading(false)
+    } catch (error) {
+      console.log("[v0] Error parsing bookings from localStorage:", error)
+      setBookings([])
     }
-  }
+  }, [isAuthenticated])
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,32 +69,38 @@ export default function CalendarPage() {
   }
 
   const generateGoogleCalendarLink = (booking: Booking) => {
-    const checkIn = parseISO(booking.check_in_date)
-    const checkOut = parseISO(booking.check_out_date)
+    try {
+      const checkIn = parseISO(booking.check_in_date)
+      const checkOut = parseISO(booking.check_out_date)
 
-    // Format dates for Google Calendar (YYYYMMDD format)
-    const startDate = format(checkIn, "yyyyMMdd")
-    const endDate = format(checkOut, "yyyyMMdd")
+      // Format dates for Google Calendar (YYYYMMDD format)
+      const startDate = format(checkIn, "yyyyMMdd")
+      const endDate = format(checkOut, "yyyyMMdd")
 
-    // Create event text with details
-    const eventText = `${booking.suite_name} - ${booking.full_name}`
-    const eventDetails = `
+      // Create event text with details
+      const eventText = `${booking.suite_name} - ${booking.full_name}`
+      const eventDetails = `
+Arrangiamento: ${booking.arrangement}
 Ospiti: ${booking.num_guests}
 Email: ${booking.email}
 ${booking.phone ? `Telefono: ${booking.phone}` : ""}
 ${booking.message ? `Note: ${booking.message}` : ""}
-    `.trim()
+      `.trim()
 
-    // Build Google Calendar URL
-    const params = new URLSearchParams({
-      action: "TEMPLATE",
-      text: eventText,
-      details: eventDetails,
-      dates: `${startDate}/${endDate}`,
-      ctz: "Europe/Rome",
-    })
+      // Build Google Calendar URL
+      const params = new URLSearchParams({
+        action: "TEMPLATE",
+        text: eventText,
+        details: eventDetails,
+        dates: `${startDate}/${endDate}`,
+        ctz: "Europe/Rome",
+      })
 
-    return `https://calendar.google.com/calendar/render?${params.toString()}`
+      return `https://calendar.google.com/calendar/render?${params.toString()}`
+    } catch (error) {
+      console.log("[v0] Error generating Google Calendar link:", error)
+      return "#"
+    }
   }
 
   if (!isAuthenticated) {
@@ -168,9 +161,14 @@ ${booking.message ? `Note: ${booking.message}` : ""}
 
   const getBookingsForDate = (date: Date) => {
     return bookings.filter((booking) => {
-      const checkIn = parseISO(booking.check_in_date)
-      const checkOut = parseISO(booking.check_out_date)
-      return date >= checkIn && date < checkOut
+      try {
+        const checkIn = parseISO(booking.check_in_date)
+        const checkOut = parseISO(booking.check_out_date)
+        return date >= checkIn && date < checkOut
+      } catch (error) {
+        console.log("[v0] Error filtering booking:", error)
+        return false
+      }
     })
   }
 
@@ -200,13 +198,6 @@ ${booking.message ? `Note: ${booking.message}` : ""}
               Esci
             </button>
           </div>
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-100/90 border border-red-400 text-red-700 rounded-lg max-w-2xl">
-              <p className="font-semibold">Errore nel caricamento:</p>
-              <p>{error}</p>
-            </div>
-          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Calendar */}
@@ -293,34 +284,41 @@ ${booking.message ? `Note: ${booking.message}` : ""}
                       <p className="text-white/60 text-sm">Nessuna prenotazione</p>
                     ) : (
                       bookings.slice(0, 10).map((booking) => {
-                        const checkIn = parseISO(booking.check_in_date)
-                        const checkOut = parseISO(booking.check_out_date)
-                        const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
+                        try {
+                          const checkIn = parseISO(booking.check_in_date)
+                          const checkOut = parseISO(booking.check_out_date)
+                          const nights = Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
 
-                        return (
-                          <div
-                            key={booking.id}
-                            className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all"
-                          >
-                            <p className="font-semibold text-elysian-primary text-sm">{booking.suite_name}</p>
-                            <p className="text-white text-sm mt-1">{booking.full_name}</p>
-                            <p className="text-white/60 text-xs mt-2">
-                              {format(checkIn, "dd MMM", { locale: it })} - {format(checkOut, "dd MMM", { locale: it })}
-                            </p>
-                            <p className="text-white/60 text-xs">
-                              {nights} notte{nights !== 1 ? "i" : ""} • {booking.num_guests} ospiti
-                            </p>
-                            <a
-                              href={generateGoogleCalendarLink(booking)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-3 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-all"
+                          return (
+                            <div
+                              key={booking.id}
+                              className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all"
                             >
-                              <CalendarIcon className="w-3 h-3" />
-                              Aggiungi a Google
-                            </a>
-                          </div>
-                        )
+                              <p className="font-semibold elysian-primary text-sm">{booking.suite_name}</p>
+                              <p className="text-white text-sm mt-1">{booking.full_name}</p>
+                              <p className="text-white/60 text-xs">{booking.arrangement}</p>
+                              <p className="text-white/60 text-xs mt-2">
+                                {format(checkIn, "dd MMM", { locale: it })} -{" "}
+                                {format(checkOut, "dd MMM", { locale: it })}
+                              </p>
+                              <p className="text-white/60 text-xs">
+                                {nights} notte{nights !== 1 ? "i" : ""} • {booking.num_guests} ospiti
+                              </p>
+                              <a
+                                href={generateGoogleCalendarLink(booking)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-3 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-all"
+                              >
+                                <CalendarIcon className="w-3 h-3" />
+                                Aggiungi a Google
+                              </a>
+                            </div>
+                          )
+                        } catch (error) {
+                          console.log("[v0] Error rendering booking:", error)
+                          return null
+                        }
                       })
                     )}
                   </div>

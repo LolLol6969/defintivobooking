@@ -1,14 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function Header() {
   const pathname = usePathname()
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [logoClickCount, setLogoClickCount] = useState(0)
 
   useEffect(() => {
     setMounted(true)
@@ -21,12 +23,31 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (logoClickCount === 0) return
+
+    const timer = setTimeout(
+      () => {
+        if (logoClickCount === 3) {
+          router.push("/calendar")
+        }
+        setLogoClickCount(0)
+      },
+      logoClickCount === 3 ? 0 : 500,
+    )
+
+    return () => clearTimeout(timer)
+  }, [logoClickCount, router])
+
+  const handleLogoClick = () => {
+    setLogoClickCount((prev) => (prev + 1) % 4)
+  }
+
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/suite", label: "Suite" },
     { href: "/esperienze", label: "Esperienze" },
     { href: "/prenota", label: "Prenota" },
-    { href: "/calendar", label: "Calendario" },
     { href: "/contatti", label: "Contatti" },
   ]
 
@@ -57,14 +78,14 @@ export default function Header() {
             }}
           >
             <div className="flex items-center justify-between px-8 py-4">
-              <Link
-                href="/"
-                className="group flex items-center space-x-3 text-2xl font-bold text-white hover:text-[#F0EAD6] transition-all duration-300"
+              <button
+                onClick={handleLogoClick}
+                className="group flex items-center space-x-3 text-2xl font-bold text-white hover:text-[#F0EAD6] transition-all duration-300 cursor-pointer"
               >
                 <span className="bg-gradient-to-r from-white to-[#F0EAD6] bg-clip-text text-transparent">
                   Orla Resort
                 </span>
-              </Link>
+              </button>
 
               <div className="hidden md:flex items-center space-x-2">
                 {navItems.map((item) => (

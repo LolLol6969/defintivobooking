@@ -17,26 +17,40 @@ export default function ContattiPage() {
     messaggio: "",
   })
 
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("fade-in-up")
-        }
-      })
-    }, observerOptions)
-
-    if (titleRef.current) observer.observe(titleRef.current)
-    if (formRef.current) observer.observe(formRef.current)
-    if (infoRef.current) observer.observe(infoRef.current)
-
-    return () => observer.disconnect()
+    setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!mounted || typeof window === "undefined") return
+
+    try {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("fade-in-up")
+          }
+        })
+      }, observerOptions)
+
+      if (titleRef.current) observer.observe(titleRef.current)
+      if (formRef.current) observer.observe(formRef.current)
+      if (infoRef.current) observer.observe(infoRef.current)
+
+      return () => observer.disconnect()
+    } catch (error) {
+      console.error("[v0] IntersectionObserver error:", error)
+    }
+  }, [mounted])
+
+  if (!mounted) return null
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
