@@ -26,6 +26,7 @@ export default function Header() {
     { href: "/suite", label: "Suite" },
     { href: "/esperienze", label: "Esperienze" },
     { href: "/prenota", label: "Prenota" },
+    { href: "/calendar", label: "Calendario" },
     { href: "/contatti", label: "Contatti" },
   ]
 
@@ -61,7 +62,7 @@ export default function Header() {
                 className="group flex items-center space-x-3 text-2xl font-bold text-white hover:text-[#F0EAD6] transition-all duration-300"
               >
                 <span className="bg-gradient-to-r from-white to-[#F0EAD6] bg-clip-text text-transparent">
-                 Orla Resort
+                  Orla Resort
                 </span>
               </Link>
 
