@@ -26,7 +26,6 @@ Non-Profit Mission
 It is stressed that this project has no goal of profit or gain for Orlando K. It is a direct and voluntary contribution to the Open Source community, aimed at making professional and stylistically advanced web tools accessible to everyone in the tourism sector, promoting innovation and accessibility.
 
 Orlando K. 
-oo.orla Instagram 
 orlandobusiness25@gmail.com
 
 
@@ -61,7 +60,5 @@ Missione Non-Profit
 Si sottolinea che questo progetto non ha alcuno scopo di lucro o guadagno per Orlando K. Si tratta di un contributo diretto e volontario alla comunità Open Source, volto a rendere accessibili strumenti web professionali e stilisticamente avanzati a tutti nel settore turistico, promuovendo l'innovazione e l'accessibilità.
 
 Orlando K.
-
-oo.orla Instagram
 
 orlandobusiness25@gmail.com
