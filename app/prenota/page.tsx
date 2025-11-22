@@ -46,10 +46,10 @@ const suites = [
 ]
 
 const arrangements = [
-  { name: "Camera Standard", value: "camera-standard" },
-  { name: "Camera Deluxe", value: "camera-deluxe" },
-  { name: "Suite", value: "suite" },
-  { name: "Villa Privata", value: "villa-privata" },
+  { name: "B&B", value: "B&B" },
+  { name: "HALF BOARD", value: "HALFBOARD" },
+  { name: "FULL BOARD", value: "FULLBOARD" },
+  { name: "ALL INCLUSIVE", value: "ALL-INCLUSIVE" },
 ]
 
 export default function PrenotaPage() {
