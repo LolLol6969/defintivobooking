@@ -162,7 +162,7 @@ export default function ContattiPage() {
                       <p className="text-gray-600">
                         Via del Mare, 123
                         <br />
-                        44024 Lido degli Estensi (FE)
+                        40123 Lido Adriano
                       </p>
                     </div>
                   </div>
