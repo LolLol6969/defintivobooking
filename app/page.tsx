@@ -52,10 +52,10 @@ export default function HomePage() {
       <section ref={heroRef} className="min-h-screen flex items-center justify-center pt-20">
         <div className="text-center px-6 max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold text-high-contrast mb-6 text-balance glass-text-bg">
-            Orla Resort
+            Resort Paradise
           </h1>
           <p className="text-xl md:text-2xl text-high-contrast mb-8 font-light text-pretty glass-text-bg">
-            Scopri un'oasi di lusso e serenità a Lido Degli Estensi, dove ogni dettaglio è pensato per un'esperienza
+            Scopri un'oasi di lusso e serenità a Lido Adriano dove ogni dettaglio è pensato per un'esperienza
             indimenticabile.
           </p>
           <Link
@@ -77,8 +77,8 @@ export default function HomePage() {
                   Benvenuti nel Vostro Paradiso Personale
                 </h2>
                 <p className="text-lg text-gray-900 mb-6 leading-relaxed font-medium">
-                  Orla Resort è più di un semplice hotel: è una promessa di evasione e benessere. Situato sulla
-                  splendida costa di Lido degli Estensi, il nostro resort di lusso offre un'ospitalità raffinata, un
+                  Il Resort Paradise è più di un semplice hotel: è una promessa di evasione e benessere. Situato sulla
+                  splendida costa di Lido Adriano, il nostro resort di lusso offre un'ospitalità raffinata, un
                   design elegante e servizi impeccabili.
                 </p>
                 <p className="text-lg text-gray-900 leading-relaxed font-medium">
